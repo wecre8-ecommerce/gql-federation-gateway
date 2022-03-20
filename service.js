@@ -1,10 +1,5 @@
 const { ApolloServer } = require("apollo-server-express");
-const {
-  ApolloServerPluginInlineTraceDisabled,
-  ApolloServerPluginLandingPageDisabled,
-  ApolloServerPluginDrainHttpServer,
-  ApolloServerPluginLandingPageGraphQLPlayground,
-} = require("apollo-server-core");
+const { ApolloServerPluginInlineTraceDisabled } = require("apollo-server-core");
 const { ApolloGateway, IntrospectAndCompose } = require("@apollo/gateway");
 const {
   default: FileUploadDataSource,
@@ -43,23 +38,15 @@ const gateway = new ApolloGateway({
 
 (async () => {
   const app = express();
+  app.use(graphqlUploadExpress());
 
-  const httpServer = http.createServer(app);
   const server = new ApolloServer({
     gateway,
-    plugins: [
-      ApolloServerPluginInlineTraceDisabled(),
-      ApolloServerPluginLandingPageDisabled(),
-      ApolloServerPluginDrainHttpServer({ httpServer }),
-      ApolloServerPluginLandingPageGraphQLPlayground({ httpServer }),
-    ],
+    plugins: [ApolloServerPluginInlineTraceDisabled()],
     context({ req }) {
       return req;
     },
   });
-
-  app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));
-
   await server.start();
   server.applyMiddleware({
     app,
@@ -72,8 +59,9 @@ const gateway = new ApolloGateway({
       credentials: true,
     },
   });
+
   await new Promise((resolve) =>
-    httpServer.listen({ port: process.env.PORT || 4000 }, resolve)
+    app.listen(parseInt(process.env.PORT || 4000, 10), "localhost", resolve)
   );
 
   for (let { name, url } of subgraphs) {
