@@ -3,7 +3,10 @@ dotenv.config();
 
 function parsePlugins(sourceString) {
   if (sourceString) {
-    return sourceString.split(',').map(s => s.trim()).filter(Boolean);
+    return sourceString
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
   }
 
   return [];
@@ -14,7 +17,7 @@ const API_URL = process.env.API_URL || process.env.API_URI;
 const PLUGINS = parsePlugins(process.env.PLUGINS);
 
 if (!API_URL) {
-  throw new Error("Must configure process.env.API_URL")
+  throw new Error("Must configure process.env.API_URL");
 }
 
 function parseSubgraphs(plugins, apiUrl) {
@@ -26,11 +29,10 @@ function parseSubgraphs(plugins, apiUrl) {
   ];
 
   subgraphs.push(
-    ...plugins
-      .map((name) => ({
-        name,
-        url: `${apiUrl}/plugins/${name}/`,
-      }))
+    ...plugins.map((name) => ({
+      name,
+      url: `${apiUrl}/plugins/${name}/`,
+    }))
   );
 
   return subgraphs;
@@ -41,11 +43,12 @@ function getInterval() {
   return process.env.POLLING_INTERVAL || defaultInterval;
 }
 
-const blackListedHeaders = [
-  'Host',
-]
+const blackListedHeaders = ["Host"];
 
-const isAllowedHeader = (header) => !blackListedHeaders.find(allowedHeader => allowedHeader.toLowerCase() === header.toLowerCase())
+const isAllowedHeader = (header) =>
+  !blackListedHeaders.find(
+    (allowedHeader) => allowedHeader.toLowerCase() === header.toLowerCase()
+  );
 
 module.exports = {
   isAllowedHeader,

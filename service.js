@@ -3,7 +3,11 @@ const {
   ApolloServerPluginDrainHttpServer,
   ApolloServerPluginLandingPageGraphQLPlayground,
 } = require("apollo-server-core");
-const { ApolloGateway, RemoteGraphQLDataSource, IntrospectAndCompose } = require("@apollo/gateway");
+const {
+  ApolloGateway,
+  RemoteGraphQLDataSource,
+  IntrospectAndCompose,
+} = require("@apollo/gateway");
 const express = require("express");
 const http = require("http");
 
@@ -24,10 +28,10 @@ const gateway = new ApolloGateway({
           const entries = Object.entries(headers);
 
           entries.forEach(([header, value]) => {
-            if (isAllowedHeader(header)){
+            if (isAllowedHeader(header)) {
               request.http.headers.set(header, value);
             }
-          })
+          });
         }
       },
     });
@@ -70,9 +74,9 @@ const gateway = new ApolloGateway({
   );
 
   for (let { name, url } of subgraphs) {
-    console.log(`-- Service ${name} federated from: ${url}`)
-  };
+    console.log(`-- Service ${name} federated from: ${url}`);
+  }
 
-  console.log('\n');
+  console.log("\n");
   console.log(`🚀 Server ready at ${server.graphqlPath}`);
 })();
