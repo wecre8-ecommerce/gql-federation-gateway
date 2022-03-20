@@ -3,11 +3,10 @@ const {
   ApolloServerPluginDrainHttpServer,
   ApolloServerPluginLandingPageGraphQLPlayground,
 } = require("apollo-server-core");
+const { ApolloGateway, IntrospectAndCompose } = require("@apollo/gateway");
 const {
-  ApolloGateway,
-  RemoteGraphQLDataSource,
-  IntrospectAndCompose,
-} = require("@apollo/gateway");
+  default: FileUploadDataSource,
+} = require("@profusion/apollo-federation-upload");
 const express = require("express");
 const http = require("http");
 
@@ -19,8 +18,9 @@ const gateway = new ApolloGateway({
     pollIntervalInMs,
   }),
   buildService({ url }) {
-    return new RemoteGraphQLDataSource({
+    return new FileUploadDataSource({
       url,
+      useChunkedTransfer: true,
       willSendRequest({ request, context }) {
         const headers = context.headers;
 
@@ -49,9 +49,7 @@ const gateway = new ApolloGateway({
       ApolloServerPluginLandingPageGraphQLPlayground({ httpServer }),
     ],
     context({ req }) {
-      return {
-        headers: req.headers,
-      };
+      return req;
     },
   });
 
