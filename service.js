@@ -47,9 +47,7 @@ const gateway = new ApolloGateway({
     gateway,
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
-      ApolloServerPluginLandingPageGraphQLPlayground({
-        httpServer: httpServer,
-      }),
+      ApolloServerPluginLandingPageGraphQLPlayground({ httpServer }),
     ],
     context({ req }) {
       return {
