@@ -10,7 +10,7 @@ const {
 const express = require("express");
 const http = require("http");
 
-const { subgraphs, pollIntervalInMs, isAllowedHeader } = require("./config");
+const { subgraphs, pollIntervalInMs, blackListedHeaders } = require("./config");
 
 const gateway = new ApolloGateway({
   supergraphSdl: new IntrospectAndCompose({
@@ -21,6 +21,11 @@ const gateway = new ApolloGateway({
     return new FileUploadDataSource({
       url,
       useChunkedTransfer: true,
+      willSendRequest({ request }) {
+        blackListedHeaders.forEach(header => {
+          request.http.headers.delete(header)
+        })
+      },
     });
   },
 });

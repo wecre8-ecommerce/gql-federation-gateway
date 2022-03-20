@@ -50,6 +50,7 @@ const isAllowedHeader = (header) =>
   );
 
 module.exports = {
+  blackListedHeaders,
   isAllowedHeader,
   subgraphs: parseSubgraphs(PLUGINS, API_URL),
   pollIntervalInMs: getInterval(),
