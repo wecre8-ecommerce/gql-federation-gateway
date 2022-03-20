@@ -42,9 +42,7 @@ function getInterval() {
   return process.env.POLLING_INTERVAL || 60000;
 }
 
-const blackListedHeaders = [
-  "Host"
-];
+const blackListedHeaders = ["Host"];
 
 const isAllowedHeader = (header) =>
   !blackListedHeaders.find(
