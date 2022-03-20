@@ -43,9 +43,9 @@ const gateway = new ApolloGateway({
   const server = new ApolloServer({
     gateway,
     plugins: [ApolloServerPluginInlineTraceDisabled()],
-    context({ req }) {
-      return req;
-    },
+    context: ({ req }) => ({
+      headers: req.headers,
+    }),
   });
   await server.start();
   server.applyMiddleware({
