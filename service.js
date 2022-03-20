@@ -50,7 +50,7 @@ const gateway = new ApolloGateway({
         httpServer: httpServer,
       }),
     ],
-    context: ({ req }) => {
+    context({ req }) {
       return {
         headers: req.headers,
       };
