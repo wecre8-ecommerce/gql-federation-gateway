@@ -21,19 +21,6 @@ const gateway = new ApolloGateway({
     return new FileUploadDataSource({
       url,
       useChunkedTransfer: true,
-      willSendRequest({ request, context }) {
-        const headers = context.headers;
-
-        if (headers) {
-          const entries = Object.entries(headers);
-
-          entries.forEach(([header, value]) => {
-            if (isAllowedHeader(header)) {
-              request.http.headers.set(header, value);
-            }
-          });
-        }
-      },
     });
   },
 });
