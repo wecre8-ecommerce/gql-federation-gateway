@@ -39,8 +39,7 @@ function parseSubgraphs(plugins, apiUrl) {
 }
 
 function getInterval() {
-  const defaultInterval = 60000; //ms
-  return process.env.POLLING_INTERVAL || defaultInterval;
+  return process.env.POLLING_INTERVAL || 60000;
 }
 
 const blackListedHeaders = ["Host"];
