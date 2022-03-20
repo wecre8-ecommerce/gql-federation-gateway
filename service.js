@@ -1,5 +1,7 @@
 const { ApolloServer } = require("apollo-server-express");
 const {
+  ApolloServerPluginInlineTraceDisabled,
+  ApolloServerPluginLandingPageDisabled,
   ApolloServerPluginDrainHttpServer,
   ApolloServerPluginLandingPageGraphQLPlayground,
 } = require("apollo-server-core");
@@ -46,6 +48,8 @@ const gateway = new ApolloGateway({
   const server = new ApolloServer({
     gateway,
     plugins: [
+      ApolloServerPluginInlineTraceDisabled(),
+      ApolloServerPluginLandingPageDisabled(),
       ApolloServerPluginDrainHttpServer({ httpServer }),
       ApolloServerPluginLandingPageGraphQLPlayground({ httpServer }),
     ],
