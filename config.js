@@ -42,7 +42,13 @@ function getInterval() {
   return process.env.POLLING_INTERVAL || 60000;
 }
 
-const blackListedHeaders = ["Host"];
+const blackListedHeaders = [
+  // Getting CORS error in login
+  "Host",
+
+  // https://github.com/form-data/form-data/pull/397#issuecomment-471976669
+  "content-length",
+];
 
 const isAllowedHeader = (header) =>
   !blackListedHeaders.find(
